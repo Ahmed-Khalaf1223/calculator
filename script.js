@@ -1,63 +1,77 @@
 // Light/Dark Theme
 
-let toggleElement = document.querySelector(".themes__toggle");
+const toggleElement = document.querySelector(".themes__toggle");
 
-let toggleDarkTheme = () => {
+const toggleDarkTheme = () => {
   toggleElement.classList.toggle("themes__toggle--isActive");
 };
-let toggleDarkThemeWithEnter = (el) => {
-  el.key === "Enter" && toggleDarkTheme();
+
+const toggleDarkThemeWithEnter = (el) => {
+  if (el.key === "Enter") {
+    toggleDarkTheme();
+  }
 };
 
 toggleElement.addEventListener("click", toggleDarkTheme);
+
 toggleElement.addEventListener("keydown", toggleDarkThemeWithEnter);
 
-// Logic for calculator
+// Calculator Logic
 
 let storedNumber = "";
 let currentNumber = "";
 let operation = "";
 
-let resultElement = document.querySelector(".calc__result");
-let keyElements = document.querySelectorAll("[data-type]");
+const resultElement = document.querySelector(".calc__result");
+const keyElements = document.querySelectorAll("[data-type]");
 
-let updateScreen = (value) => {
+const updateScreen = (value) => {
   resultElement.innerText = !value ? "0" : value;
 };
 
-let numberButtonHandler = (value) => {
+const numberButtonHandler = (value) => {
   if (value === "." && currentNumber.includes(".")) return;
+
   if (value === "0" && !currentNumber) return;
+
   currentNumber += value;
+
   updateScreen(currentNumber);
 };
 
-let resetButtonHandler = () => {
+const resetButtonHandler = () => {
   storedNumber = "";
   currentNumber = "";
   operation = "";
+
   updateScreen(currentNumber);
 };
 
-let deleteButtonHandler = () => {
+const deleteButtonHandler = () => {
   if (currentNumber === "0" || !currentNumber) return;
-  if (currentNumber === "1") {
+
+  if (currentNumber.length === 1) {
     currentNumber = "";
   } else {
     currentNumber = currentNumber.substring(0, currentNumber.length - 1);
   }
+
   updateScreen(currentNumber);
 };
+
 keyElements.forEach((el) => {
   el.addEventListener("click", () => {
-    let type = el.dataset.type;
+    const type = el.dataset.type;
+    const value = el.dataset.value;
+
     if (type === "number") {
-      numberButtonHandler(el.dataset.value);
+      numberButtonHandler(value);
     } else if (type === "operation") {
-      switch (el.dataset.value) {
+      switch (value) {
         case "Delete":
           resetButtonHandler();
           break;
+
         case "Backspace":
           deleteButtonHandler();
           break;
